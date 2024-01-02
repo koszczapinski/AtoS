@@ -176,3 +176,6 @@ dist
 
 # mp3 files
 \*.mp3
+
+# transcipts directory
+transcripts/*.txt
