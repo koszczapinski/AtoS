@@ -1,5 +1,4 @@
 import { readdir } from "node:fs/promises";
-import { join } from "node:path";
 
 export const getAudioFileNames = async (dir: string) => {
   try {

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const fileNames = ["diw5_odc_2_001.txt", "diw5_odc_2_002.txt"];
+const fileNames = ["diw5_odc_3_001.txt", "diw5_odc_3_002.txt"];
 
 // Specify the file paths
 if (!fileNames) {

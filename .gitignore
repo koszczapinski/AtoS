@@ -175,7 +175,10 @@ dist
 .DS_Store
 
 # mp3 files
-\*.mp3
+*.mp3
+
+# wav files
+*.wav
 
 # transcipts directory
 transcripts/*.txt
