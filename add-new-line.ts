@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
+import { getDirectoryFileNames } from "./utils";
 
-const fileNames = ["diw5_odc_3_001.txt", "diw5_odc_3_002.txt"];
+const fileNames = getDirectoryFileNames("./transcripts");
 
-// Specify the file paths
 if (!fileNames) {
   throw new Error("No file names");
 }
@@ -25,7 +25,6 @@ for (const fileName of fileNames) {
 
     // Add new lines after each '.' but remove ' ' and '\n' after each '.'
     const modifiedContent = data.replace(/\. /g, ".\n\n").replace(/\n /g, "\n");
-    // const modifiedContent = data.replace(/\./g, ".\n\n");
 
     // Write the modified content to a new file with the specified prefix
     fs.writeFile(
