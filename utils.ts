@@ -2,10 +2,14 @@ import fs from "fs";
 import path from "path";
 
 export const renameFilesInDirectory = async (directory: string) => {
-  try {
-    const files = await fs.promises.readdir(directory);
+  const files = await fs.promises.readdir(directory);
 
-    const renamePromises = files.map(async (file) => {
+  const renamePromises = files.map(async (file) => {
+    try {
+      if (file === ".gitkeep") {
+        return;
+      }
+
       const filePath = path.join(directory, file);
 
       const ext = path.extname(file);
@@ -16,19 +20,19 @@ export const renameFilesInDirectory = async (directory: string) => {
       const newFileName = `${baseName}${ext}`;
       const newFilePath = path.join(directory, newFileName);
 
-      const data = await fs.promises.readFile(filePath);
-      await fs.promises.writeFile(newFilePath, data);
-      // Delete the original file if the new file name is different
       if (file !== newFileName) {
-        await fs.promises.unlink(filePath);
+        await fs.promises.rename(filePath, newFilePath);
       }
-    });
+    } catch (error) {
+      console.error(
+        `An error occurred while renaming the file ${file}:`,
+        error
+      );
+    }
+  });
 
-    await Promise.all(renamePromises);
-    console.log("All files have been renamed successfully");
-  } catch (error) {
-    console.error("An error occurred while renaming the files:", error);
-  }
+  await Promise.all(renamePromises);
+  console.log("All files have been renamed successfully");
 };
 
 export const getDirectoryFileNames = (

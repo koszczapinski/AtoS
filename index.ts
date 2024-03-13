@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 console.log("getting audio file names...");
 
-const audioFileNames = await getDirectoryFileNames("./audio");
+const audioFileNames = getDirectoryFileNames("./audio");
 
 console.log(audioFileNames);
 
