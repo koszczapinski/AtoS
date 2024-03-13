@@ -51,8 +51,10 @@ export const getDirectoryFileNames = (
 
 export const cleanDirectory = async (directory: string) => {
   const files = await fs.promises.readdir(directory);
-  const unlinkPromises = files.map((file) =>
-    fs.promises.unlink(path.join(directory, file))
-  );
+  const unlinkPromises = files.map((file) => {
+    if (file !== ".gitkeep") {
+      return fs.promises.unlink(path.join(directory, file));
+    }
+  });
   return Promise.all(unlinkPromises);
 };
