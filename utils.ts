@@ -41,12 +41,15 @@ export const getDirectoryFileNames = (
 ): string[] | null => {
   try {
     const fileNames = fs.readdirSync(dir);
+    const filteredFileNames = fileNames.filter(
+      (fileName) => fileName !== ".gitkeep"
+    );
     if (comparator) {
-      fileNames.sort(comparator);
+      filteredFileNames.sort(comparator);
     } else {
-      fileNames.sort();
+      filteredFileNames.sort();
     }
-    return fileNames;
+    return filteredFileNames;
   } catch (err) {
     console.error(`Failed to read directory ${dir}:`, err);
     return null;
