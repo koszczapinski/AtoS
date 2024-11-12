@@ -1,4 +1,4 @@
-# atos (Audio to Subtitles)
+# AtoS (Audio to Subtitles)
 
 A command-line tool for transcribing audio files to text using OpenAI's Whisper model.
 
