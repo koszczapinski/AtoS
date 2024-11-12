@@ -1,20 +1,24 @@
 import fs from "fs";
 import path from "path";
 
-export const renameFilesInDirectory = async (directory: string) => {
-  const files = await fs.promises.readdir(directory);
+export const renameFilesInDirectory = async (directory: string): Promise<void> => {
+  try {
+    const files = await fs.promises.readdir(directory);
 
-  const renamePromises = files.map(async (file) => {
-    try {
+    const renamePromises = files.map(async (file) => {
       if (file === ".gitkeep") {
         return;
       }
 
       const filePath = path.join(directory, file);
 
+      const stats = await fs.promises.stat(filePath);
+      if (!stats.isFile()) {
+        return;
+      }
+
       const ext = path.extname(file);
       let baseName = path.basename(file, ext);
-
       baseName = baseName.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
 
       const newFileName = `${baseName}${ext}`;
@@ -22,17 +26,16 @@ export const renameFilesInDirectory = async (directory: string) => {
 
       if (file !== newFileName) {
         await fs.promises.rename(filePath, newFilePath);
+        console.log(`Renamed: ${file} → ${newFileName}`);
       }
-    } catch (error) {
-      console.error(
-        `An error occurred while renaming the file ${file}:`,
-        error
-      );
-    }
-  });
+    });
 
-  await Promise.all(renamePromises);
-  console.log("All files have been renamed successfully");
+    await Promise.all(renamePromises);
+    console.log("All files have been renamed successfully");
+  } catch (error) {
+    console.error(`Error processing directory ${directory}:`, error);
+    throw error;
+  }
 };
 
 export const getDirectoryFileNames = (
@@ -56,12 +59,17 @@ export const getDirectoryFileNames = (
   }
 };
 
-export const cleanDirectory = async (directory: string) => {
-  const files = await fs.promises.readdir(directory);
-  const unlinkPromises = files.map((file) => {
-    if (file !== ".gitkeep") {
-      return fs.promises.unlink(path.join(directory, file));
-    }
-  });
-  return Promise.all(unlinkPromises);
+export const cleanDirectory = async (directory: string): Promise<void> => {
+  try {
+    const files = await fs.promises.readdir(directory);
+    const unlinkPromises = files
+      .filter(file => file !== ".gitkeep")
+      .map(file => fs.promises.unlink(path.join(directory, file)));
+
+    await Promise.all(unlinkPromises);
+    console.log(`Cleaned directory: ${directory}`);
+  } catch (error) {
+    console.error(`Error cleaning directory ${directory}:`, error);
+    throw error;
+  }
 };
