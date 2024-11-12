@@ -15,10 +15,11 @@ A command-line tool for transcribing audio files to text using OpenAI's Whisper 
    bun install
    ```
 
-2. Set up your OpenAI API key as an environment variable:
-
-   ```bash
-   export OPENAI_API_KEY='your-api-key-here'
+2. Set up your OpenAI API key:
+   - Copy `.env.example` to create a new `.env` file
+   - Add your OpenAI API key to the `.env` file:
+   ```
+   OPENAI_API_KEY=your-api-key-here
    ```
 
 ## Usage
