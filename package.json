@@ -10,5 +10,11 @@
   },
   "dependencies": {
     "openai": "^4.24.1"
+  },
+  "scripts": {
+    "transcribe": "bun rename && bun run index.ts && bun run format",
+    "rename": "bun run renameFiles.ts",
+    "format": "bun run formatOutput.ts",
+    "clean": "bun run clean.ts"
   }
 }

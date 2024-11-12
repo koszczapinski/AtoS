@@ -13,10 +13,8 @@ const audioFileNames = getDirectoryFileNames("./audio");
 
 console.log(audioFileNames);
 
-// todo refactor to async promise all to make it faster
-
 if (audioFileNames) {
-  for (const [index, fileName] of audioFileNames.entries()) {
+  const transcriptionPromises = audioFileNames.map(async (fileName, index) => {
     console.log(
       `[${index + 1}/${
         audioFileNames.length
@@ -31,10 +29,20 @@ if (audioFileNames) {
       });
 
       await Bun.write(`./transcripts/${fileName.split(".")[0]}.txt`, text);
-
       console.log(text);
+      return { fileName, success: true };
     } catch (error) {
-      console.error(error);
+      console.error(`Error processing ${fileName}:`, error);
+      return { fileName, success: false };
     }
-  }
+  });
+
+  const results = await Promise.all(transcriptionPromises);
+  console.log(
+    "All transcriptions completed:",
+    results.filter((r) => r.success).length,
+    "successful,",
+    results.filter((r) => !r.success).length,
+    "failed"
+  );
 }
