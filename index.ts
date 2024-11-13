@@ -1,12 +1,10 @@
-import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
-import { getDirectoryFileNames } from "./utils";
+
 import chalk from "chalk";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { getDirectoryFileNames } from "./utils";
+import { openai } from "./src/services/openai";
 
 console.log(chalk.blue.bold("\n🎙️ Starting audio transcription process..."));
 
