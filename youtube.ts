@@ -32,7 +32,7 @@ async function downloadYoutubeAudio(url: string): Promise<void> {
 
     toPipeableStream(stream).pipe(fs.createWriteStream(outputFilePath));
 
-    console.log(chalk.green(`\n✅ Download started: ${outputFilePath}`));
+    console.log(chalk.green(`✅ Download finished: ${outputFilePath}`));
   } catch (error) {
     if (error instanceof Error) {
       console.error(chalk.red("Error:", error.message));
