@@ -9,6 +9,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@ybd-project/ytdl-core": "latest",
     "chalk": "^5.3.0",
     "openai": "^4.24.1"
   },
@@ -16,6 +17,7 @@
     "transcribe": "bun rename && bun run index.ts && bun run format",
     "rename": "bun run renameFiles.ts",
     "format": "bun run formatOutput.ts",
-    "clean": "bun run clean.ts"
+    "clean": "bun run clean.ts",
+    "youtube": "bun run youtube.ts"
   }
 }
