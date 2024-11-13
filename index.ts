@@ -4,16 +4,16 @@ import path from "path";
 import chalk from "chalk";
 
 import { getDirectoryFileNames } from "./utils";
-import { openai } from "./src/services/openai";
+import { openAIClient } from "./src/services/openai";
 
-console.log(chalk.blue.bold("\n🎙️ Starting audio transcription process..."));
+console.log(chalk.blue.bold("🎙️ Starting audio transcription process..."));
 
 const audioFileNames = getDirectoryFileNames("./audio");
 
 if (audioFileNames && audioFileNames.length === 0) {
-  console.log(chalk.yellow("\n⚠️ No audio files found in ./audio directory"));
+  console.log(chalk.yellow("⚠️ No audio files found in ./audio directory"));
 } else {
-  console.log(chalk.cyan("\n📂 Found audio files:"));
+  console.log(chalk.cyan("📂 Found audio files:"));
   audioFileNames?.forEach((file) => {
     console.log(chalk.dim(`   • ${file}`));
   });
@@ -25,14 +25,14 @@ if (audioFileNames) {
 
     console.log(
       chalk.cyan(
-        `\n${progress} ${chalk.cyan.bold("🔄 Processing:")} ${chalk.white(
+        `${progress} ${chalk.cyan.bold("🔄 Processing:")} ${chalk.white(
           fileName
         )}`
       )
     );
     try {
       const filePath = path.resolve(`./audio/${fileName}`);
-      const { text } = await openai.audio.transcriptions.create({
+      const { text } = await openAIClient.audio.transcriptions.create({
         file: fs.createReadStream(filePath),
         model: "whisper-1",
         language: "pl",
@@ -44,7 +44,7 @@ if (audioFileNames) {
           chalk.green(fileName)
       );
       console.log(
-        chalk.gray(`📝 Content preview: "${text.substring(0, 100)}..."\n`)
+        chalk.gray(`📝 Content preview: "${text.substring(0, 100)}..."`)
       );
       return { fileName, success: true };
     } catch (error) {
@@ -52,7 +52,7 @@ if (audioFileNames) {
         error instanceof Error ? error.message : "Unknown error";
       console.error(
         chalk.red.bold("❌ Error processing: ") + chalk.red(fileName),
-        "\n   " + chalk.red.dim(errorMessage)
+        "   " + chalk.red.dim(errorMessage)
       );
       return { fileName, success: false };
     }
@@ -62,8 +62,8 @@ if (audioFileNames) {
   const successful = results.filter((r) => r.success).length;
   const failed = results.filter((r) => !r.success).length;
 
-  console.log(chalk.dim("\n" + "═".repeat(50)));
-  console.log(chalk.bold("\n📊 Transcription Summary"));
+  console.log(chalk.dim("═".repeat(50)));
+  console.log(chalk.bold("📊 Transcription Summary"));
   console.log(chalk.dim("─".repeat(20)));
   console.log(chalk.green.bold(`✅ Successful: ${chalk.white(successful)}`));
   console.log(chalk.red.bold(`❌ Failed: ${chalk.white(failed)}`));
