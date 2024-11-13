@@ -4,7 +4,7 @@ import path from "path";
 import { Command } from "commander";
 import chalk from "chalk";
 
-import { openAIClient } from "./src/services/openai";
+import { openAIClient } from "./src/api/openai";
 import { getDirectoryFileNames } from "./utils";
 
 const program = new Command();
