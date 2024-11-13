@@ -4,7 +4,7 @@ import path from "path";
 import { Command } from "commander";
 import chalk from "chalk";
 
-import { openAIClient } from "./src/api/openai";
+import { openAIClient, SUPPORTED_LANGUAGES } from "./src/api/openai";
 import { getDirectoryFileNames } from "./utils";
 
 type TranscriptionResult = {
@@ -87,6 +87,13 @@ async function main() {
 
   if (!audioFileNames?.length) {
     console.log(chalk.yellow("⚠️ No audio files found in ./audio directory"));
+    return;
+  }
+
+  if (!SUPPORTED_LANGUAGES.includes(options.lang)) {
+    console.log(
+      chalk.red.bold("❌ Invalid language: ") + chalk.red(options.lang)
+    );
     return;
   }
 
