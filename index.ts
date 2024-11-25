@@ -4,8 +4,8 @@ import path from "path";
 import { Command } from "commander";
 import chalk from "chalk";
 
-import { openAIClient, SUPPORTED_LANGUAGES } from "./api/openai";
-import { getDirectoryFileNames } from "./utils";
+import { openAIClient, SUPPORTED_LANGUAGES } from "@/api/openai";
+import { getDirectoryFileNames } from "@/utils";
 
 type TranscriptionResult = {
   fileName: string;
