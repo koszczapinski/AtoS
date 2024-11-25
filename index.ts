@@ -4,7 +4,7 @@ import path from "path";
 import { Command } from "commander";
 import chalk from "chalk";
 
-import { openAIClient, SUPPORTED_LANGUAGES } from "./src/api/openai";
+import { openAIClient, SUPPORTED_LANGUAGES } from "./api/openai";
 import { getDirectoryFileNames } from "./utils";
 
 type TranscriptionResult = {
@@ -67,7 +67,7 @@ async function processAudioFile(
   }
 }
 
-function printSummary(results: TranscriptionResult[]) {
+function printSummary(results: TranscriptionResult[], duration: number) {
   const successful = results.filter((r) => r.success).length;
   const failed = results.filter((r) => !r.success).length;
 
@@ -76,11 +76,15 @@ function printSummary(results: TranscriptionResult[]) {
   console.log(chalk.dim("─".repeat(20)));
   console.log(chalk.green.bold(`✅ Successful: ${chalk.white(successful)}`));
   console.log(chalk.red.bold(`❌ Failed: ${chalk.white(failed)}`));
+  console.log(
+    chalk.blue.bold(`⏱️ Duration: ${chalk.white(duration.toFixed(2))}s`)
+  );
   console.log();
 }
 
 async function main() {
   console.log(chalk.blue.bold("🎙️ Starting audio transcription process..."));
+  const startTime = Date.now();
 
   const options = setupCLI();
   const audioFileNames = getDirectoryFileNames(options.inputDir);
@@ -116,7 +120,8 @@ async function main() {
   );
 
   const results = await Promise.all(transcriptionPromises);
-  printSummary(results);
+  const duration = (Date.now() - startTime) / 1000;
+  printSummary(results, duration);
 }
 
 main().catch((error) => {
