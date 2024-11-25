@@ -50,6 +50,7 @@ This command will:
 - `bun rename` - Clean up audio file names
 - `bun format` - Format existing transcript files
 - `bun clean` - Remove all files from audio and transcripts directories
+- `bun youtube` - Download audio from YouTube to the ./audio directory
 
 ## Output
 
@@ -70,7 +71,7 @@ Transcribed files will be saved in the `transcripts` directory with the same bas
 Example with options:
 
 ```bash
-bun run index.ts --lang fr --input-dir ./my-audio --output-dir ./my-transcripts
+bun transcribe --lang pl --input-dir ./my-audio --output-dir ./my-transcripts
 ```
 
 ## Directory Structure
@@ -79,9 +80,7 @@ bun run index.ts --lang fr --input-dir ./my-audio --output-dir ./my-transcripts
 .
 ├── audio/          # Default input directory for audio files
 ├── transcripts/    # Default output directory for transcriptions
-├── src/
-│   └── api/
-│       └── openai.ts
+├── api/            # API related files
 ├── index.ts        # Main application file
 └── utils.ts        # Utility functions
 ```
